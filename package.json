@@ -4,6 +4,9 @@
   "version": "0.0.0",
   "repository": "chiel/food",
   "author": "chiel",
+  "workspaces": [
+    "packages/*"
+  ],
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
