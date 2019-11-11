@@ -3,5 +3,12 @@
   "name": "@food/app",
   "version": "0.0.0",
   "repository": "chiel/food",
-  "author": "chiel"
+  "author": "chiel",
+  "main": "dist",
+  "scripts": {
+    "build": "webpack --display errors-only"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
