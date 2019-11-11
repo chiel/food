@@ -1,0 +1,45 @@
+html {
+	box-sizing: border-box;
+	color: #444;
+	font: 300 16px/26px roboto, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: inherit;
+}
+
+body {
+	margin: 0;
+}
+
+h1,
+h2,
+h3 {
+	margin: 0 0 18px;
+	font-family: shadows into light two, cursive;
+	letter-spacing: .02em;
+	line-height: 52px;
+}
+
+h1 {
+	font-size: 34px;
+}
+
+h2 {
+	font-size: 29px;
+}
+
+h3 {
+	font-size: 24px;
+	line-height: 26px;
+}
+
+p {
+	margin: 0;
+
+	+ p {
+		margin: 18px 0 0;
+	}
+}

@@ -7,6 +7,8 @@ import App from '../app/components/App';
 
 const app = express();
 
+app.use('/assets', express.static(`${__dirname}/assets`));
+
 app.get('/', (req, res) => {
 	const markup = renderDocument(<App />);
 	res.send(markup);
