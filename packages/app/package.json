@@ -6,7 +6,10 @@
   "author": "chiel",
   "main": "dist",
   "scripts": {
-    "build": "webpack --display errors-only"
+    "build": "webpack --display errors-only",
+    "watch": "run-p watch:*",
+    "watch:nodemon": "nodemon -w dist dist",
+    "watch:webpack": "webpack --display errors-only -w"
   },
   "dependencies": {
     "express": "^4.17.1"

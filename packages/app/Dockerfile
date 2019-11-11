@@ -22,3 +22,15 @@ COPY --chown=app:app ./dist /opt/project
 ENTRYPOINT ["node"]
 
 CMD ["index.js"]
+
+
+# development image
+FROM base AS dev
+
+WORKDIR /opt/project/packages/app
+
+USER app:app
+
+VOLUME ["/opt/project"]
+
+CMD ["yarn", "watch"]
