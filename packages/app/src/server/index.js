@@ -1,11 +1,14 @@
 import express from 'express';
+import React from 'react';
 
 import renderDocument from './utils/renderDocument';
+
+import App from '../app/components/App';
 
 const app = express();
 
 app.get('/', (req, res) => {
-	const markup = renderDocument('<div>Hello world!</div>');
+	const markup = renderDocument(<App />);
 	res.send(markup);
 });
 
