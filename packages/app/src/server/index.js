@@ -1,9 +1,11 @@
 import express from 'express';
 
+import renderDocument from './utils/renderDocument';
+
 const app = express();
 
 app.get('/', (req, res) => {
-	const markup = '<div>Hello world!</div>';
+	const markup = renderDocument('<div>Hello world!</div>');
 	res.send(markup);
 });
 
