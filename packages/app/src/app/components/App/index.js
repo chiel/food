@@ -1,16 +1,16 @@
 import './base.css';
 
 import React from 'react';
+import { Route, Switch } from 'react-router-dom';
 
-import BrandedLayout from '../BrandedLayout';
+import ComingSoon from '../ComingSoon';
 
 export default function App() {
 	return (
-		<BrandedLayout>
-			<h1>Hello there!</h1>
-			<p>
-				Soon there should be something more than a blank page here.
-			</p>
-		</BrandedLayout>
+		<Switch>
+			<Route path="/">
+				<ComingSoon />
+			</Route>
+		</Switch>
 	);
 }
