@@ -53,6 +53,20 @@ jobs:
           name: build
           path: packages/app/dist
 
+  lint:
+    name: Lint app
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - uses: actions/checkout@v1
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-dependencies-${{ hashFiles('yarn.lock') }}
+      - name: Lint app
+        run: yarn lint
+
   docker-build:
     name: Build app Dockerfile
     runs-on: ubuntu-latest
