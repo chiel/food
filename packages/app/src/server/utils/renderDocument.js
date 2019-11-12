@@ -15,6 +15,7 @@ export default function renderDocument(component) {
 	</head>
 	<body>
 		<div id="app-root">${markup}</div>
+		<script src="/assets/app.js"></script>
 	</body>
 </html>`;
 }

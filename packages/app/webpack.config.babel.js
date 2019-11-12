@@ -6,21 +6,9 @@ import postcssNested from 'postcss-nested';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-export default {
-	target: 'node',
+const common = {
 	mode: isProduction ? 'production' : 'development',
 	devtool: isProduction ? 'source-map' : 'cheap-module-source-map',
-	node: {
-		__dirname: false,
-		__filename: false,
-	},
-	optimization: {
-		nodeEnv: false,
-	},
-	entry: './src/server',
-	output: {
-		filename: 'index.js',
-	},
 	module: {
 		rules: [
 			{
@@ -52,3 +40,29 @@ export default {
 		}),
 	],
 };
+
+export default [
+	{
+		...common,
+		target: 'node',
+		node: {
+			__dirname: false,
+			__filename: false,
+		},
+		optimization: {
+			nodeEnv: false,
+		},
+		entry: './src/server',
+		output: {
+			filename: 'index.js',
+		},
+	},
+	{
+		...common,
+		target: 'web',
+		entry: './src/client',
+		output: {
+			filename: 'assets/app.js',
+		},
+	},
+];
