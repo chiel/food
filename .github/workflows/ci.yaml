@@ -75,3 +75,22 @@ jobs:
             --password-stdin
       - name: Push image to GPR
         run: docker push $DOCKER_REPO/app:$GITHUB_SHA
+
+  kubernetes-deploy:
+    name: Deploy app to kubernetes
+    runs-on: ubuntu-latest
+    needs: docker-build
+    steps:
+      - uses: actions/checkout@master
+      - name: Generate kubernetes config
+        run: envsubst < packages/app/.k8s.template.yaml > packages/app/.k8s.yaml
+      - name: Save DigitalOcean kubeconfig
+        uses: digitalocean/action-doctl@master
+        env:
+          DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
+        with:
+          args: kubernetes cluster kubeconfig show main > .kubeconfig
+      - name: Apply kubernetes config
+        uses: docker://lachlanevenson/k8s-kubectl
+        with:
+          args: --kubeconfig=.kubeconfig apply -f packages/app/.k8s.yaml
