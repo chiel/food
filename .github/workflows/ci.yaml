@@ -15,10 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Lint Dockerfiles
-        uses: docker://hadolint/hadolint:latest-debian
-        with:
-          entrypoint: hadolint
-          args: packages/app/Dockerfile
+        uses: docker://cdssnc/docker-lint-github-action
 
   install:
     name: Install dependencies
