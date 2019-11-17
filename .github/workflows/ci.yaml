@@ -46,6 +46,47 @@ jobs:
       - name: Lint
         run: yarn lint
 
+  build-api:
+    name: Build api
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - uses: actions/checkout@v1
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-dependencies-${{ hashFiles('yarn.lock') }}
+      - name: Build api
+        run: 'cd packages/api && yarn build'
+      - uses: actions/upload-artifact@master
+        with:
+          name: api-build
+          path: packages/api/dist
+
+  docker-build-api:
+    name: Build api Dockerfile
+    runs-on: ubuntu-latest
+    needs: build-api
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/download-artifact@master
+        with:
+          name: api-build
+          path: packages/api/dist
+      - name: Build the image
+        env:
+          DOCKER_BUILDKIT: 1
+        run: docker build --target prod -t $DOCKER_REPO/api:$GITHUB_SHA packages/api
+      - name: Login to GPR
+        run: |
+          echo "${{ secrets.REGISTRY_TOKEN }}" | \
+          docker login docker.pkg.github.com \
+            -u "${{ secrets.REGISTRY_USER }}" \
+            --password-stdin
+      - name: Push image to GPR
+        run: docker push $DOCKER_REPO/api:$GITHUB_SHA
+
   build-app:
     name: Build app
     runs-on: ubuntu-latest
@@ -88,13 +129,17 @@ jobs:
         run: docker push $DOCKER_REPO/app:$GITHUB_SHA
 
   kubernetes-deploy:
-    name: Deploy app to kubernetes
+    name: Apply kubernetes manifests
     runs-on: ubuntu-latest
-    needs: docker-build
+    needs:
+      - docker-build-api
+      - docker-build-app
     steps:
       - uses: actions/checkout@master
+      - name: Concatenate kubernetes config templates
+        run: cat packages/*/.k8s.template.yaml > .k8s.template.yaml
       - name: Generate kubernetes config
-        run: envsubst < packages/app/.k8s.template.yaml > packages/app/.k8s.yaml
+        run: envsubst < .k8s.template.yaml > .k8s.yaml
       - name: Save DigitalOcean kubeconfig
         uses: digitalocean/action-doctl@master
         env:
@@ -104,4 +149,4 @@ jobs:
       - name: Apply kubernetes config
         uses: docker://lachlanevenson/k8s-kubectl
         with:
-          args: --kubeconfig=.kubeconfig apply -f packages/app/.k8s.yaml
+          args: --kubeconfig=.kubeconfig apply -f .k8s.yaml
