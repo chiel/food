@@ -1,6 +1,13 @@
 version: '3.7'
 
 services:
+  api:
+    image: docker.pkg.github.com/chiel/food/api:dev-latest
+    ports:
+      - 9153:9153
+    volumes:
+      - .:/opt/project
+
   app:
     image: docker.pkg.github.com/chiel/food/app:dev-latest
     ports:
