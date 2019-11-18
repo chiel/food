@@ -50,3 +50,24 @@ spec:
       containers:
         - name: api
           image: docker.pkg.github.com/chiel/food/api:${GITHUB_SHA}
+          envFrom:
+            - configMapRef:
+                name: food-api-env
+            - secretRef:
+                name: food-api-secret-env
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: food-api-env
+data:
+  AUTH_GOOGLE_CLIENT_ID: 790542077708-mi1vnpf9br2rs1slfv7gclvs01o8pdj7.apps.googleusercontent.com
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: food-api-secret-env
+stringData:
+  AUTH_GOOGLE_CLIENT_SECRET: ${AUTH_GOOGLE_CLIENT_SECRET}

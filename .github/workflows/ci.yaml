@@ -139,6 +139,8 @@ jobs:
       - name: Concatenate kubernetes config templates
         run: cat packages/*/.k8s.template.yaml > .k8s.template.yaml
       - name: Generate kubernetes config
+        env:
+          AUTH_GOOGLE_CLIENT_SECRET: ${{ secrets.AUTH_GOOGLE_CLIENT_SECRET }}
         run: envsubst < .k8s.template.yaml > .k8s.yaml
       - name: Save DigitalOcean kubeconfig
         uses: digitalocean/action-doctl@master
