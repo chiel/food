@@ -7,6 +7,7 @@ import renderDocument from './utils/renderDocument';
 import App from '../app/components/App';
 
 const app = express();
+app.disable('x-powered-by');
 
 app.use('/assets', express.static(`${__dirname}/assets`));
 
