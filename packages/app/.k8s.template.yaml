@@ -50,3 +50,15 @@ spec:
       containers:
         - name: app
           image: docker.pkg.github.com/chiel/food/app:${GITHUB_SHA}
+          envFrom:
+            - configMapRef:
+                name: food-app-env
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: food-app-env
+data:
+  API_URL: http://food-api
+  APP_URL: https://food.kunkels.me
