@@ -12,6 +12,8 @@
     "watch:webpack": "webpack --display errors-only -w"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "rxjs": "^6.5.3",
+    "xhr2": "^0.2.0"
   }
 }
