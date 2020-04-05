@@ -16,3 +16,17 @@ services:
       - 9152:9152
     volumes:
       - .:/opt/project
+
+  postgres:
+    image: postgres:12.0-alpine
+    restart: always
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_DB: food
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:
